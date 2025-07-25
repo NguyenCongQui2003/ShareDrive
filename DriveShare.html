@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareDrive Phân Quyền Chi Tiết</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .main-node {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .main-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(52, 152, 219, 0.4);
+        }
+
+        .departments {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .department {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .department:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(74, 144, 226, 0.4);
+        }
+
+        .department h3 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 10px;
+        }
+
+        .resources {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .resource {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #fff;
+            transition: all 0.3s ease;
+        }
+
+        .resource:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(5px);
+        }
+
+        .resource-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .permissions {
+            font-size: 0.9em;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .security-layer {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        .security-layer h3 {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 25px;
+        }
+
+        .security-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .security-feature {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .security-feature:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .connecting-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #3498db, transparent);
+            height: 2px;
+            opacity: 0.6;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .line {
+            animation: pulse 2s infinite;
+        }
+
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .departments {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">📊 ShareDrive - Hệ Thống Phân Quyền Chi Tiết</h1>
+        
+        <div class="diagram">
+            <div class="connecting-lines">
+                <div class="line" style="top: 120px; left: 50%; width: 300px; transform: translateX(-50%);"></div>
+            </div>
+            
+            <div class="main-node tooltip" data-tooltip="Hệ thống quản lý tài liệu tập trung">
+                🗄️ ShareDrive
+            </div>
+
+            <div class="departments">
+                <div class="department tooltip" data-tooltip="Quản lý tài chính và thuế">
+                    <h3>💰 Phòng Kế Toán</h3>
+                    <div class="resources">
+                        <div class="resource">
+                            <div class="resource-name">📋 Thuế</div>
+                            <div class="permissions">
+                                • Quyền: Đọc/Ghi/Xóa<br>
+                                • Truy cập: Nhân viên KT + Trưởng phòng<br>
+                                • Backup: Hàng ngày
+                            </div>
+                        </div>
+                        <div class="resource">
+                            <div class="resource-name">📄 Tài liệu nội bộ (Cấp cao)</div>
+                            <div class="permissions">
+                                • Quyền: Đọc/Ghi<br>
+                                • Truy cập: Toàn bộ phòng KT
+                            </div>
+                        </div>
+                        <div class="resource">
+                            <div class="resource-name">📄 Tài liệu nội bộ (Cấp thấp)</div>
+                            <div class="permissions">
+                                • Quyền: Chỉ đọc<br>
+                                • Truy cập: Nhân viên cấp thấp
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="department tooltip" data-tooltip="Quản lý hạ tầng và platform">
+                    <h3>⚙️ Phòng Kỹ Thuật</h3>
+                    <div class="resources">
+                        <div class="resource">
+                            <div class="resource-name">🏗️ IAAS</div>
+                            <div class="permissions">
+                                • Quyền: Full Admin<br>
+                                • Truy cập: Team Infrastructure<br>
+                                • Monitoring: 24/7
+                            </div>
+                        </div>
+                        <div class="resource">
+                            <div class="resource-name">📄 Tài liệu nội bộ</div>
+                            <div class="permissions">
+                                • Quyền: Đọc/Ghi/Chia sẻ<br>
+                                • Truy cập: Toàn bộ phòng KT
+                            </div>
+                        </div>
+                        <div class="resource">
+                            <div class="resource-name">🔧 PAAS</div>
+                            <div class="permissions">
+                                • Quyền: Deploy/Monitor<br>
+                                • Truy cập: Team Platform<br>
+                                • CI/CD: Tự động
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="department tooltip" data-tooltip="Quản lý hợp đồng và bán hàng">
+                    <h3>🤝 Phòng Bán Hàng</h3>
+                    <div class="resources">
+                        <div class="resource">
+                            <div class="resource-name">📋 Hợp Đồng</div>
+                            <div class="permissions">
+                                • Quyền: Tạo/Sửa/Phê duyệt<br>
+                                • Truy cập: Sales + Quản lý<br>
+                                • Workflow: Phê duyệt tự động
+                            </div>
+                        </div>
+                        <div class="resource">
+                            <div class="resource-name">📄 Tài liệu nội bộ</div>
+                            <div class="permissions">
+                                • Quyền: Đọc/Ghi<br>
+                                • Truy cập: Team Sales<br>
+                                • CRM: Tích hợp
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="department tooltip" data-tooltip="Quản lý pháp lý và tuân thủ">
+                    <h3>⚖️ Phòng Pháp chế</h3>
+                    <div class="resources">
+                        <div class="resource">
+                            <div class="resource-name">📄 Tài liệu nội bộ</div>
+                            <div class="permissions">
+                                • Quyền: Đọc/Ghi/Bảo mật cao<br>
+                                • Truy cập: Chỉ phòng Pháp chế<br>
+                                • Mã hóa: AES-256
+                            </div>
+                        </div>
+                        <div class="resource">
+                            <div class="resource-name">📋 Biên bản</div>
+                            <div class="permissions">
+                                • Quyền: Tạo/Ký số<br>
+                                • Truy cập: Luật sư + Chứng thực<br>
+                                • Digital Signature: PKI
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="department tooltip" data-tooltip="Quyền cao nhất trong hệ thống" style="grid-column: 1 / -1;">
+                    <h3>👑 Tổng Giám Đốc</h3>
+                    <div class="resources" style="flex-direction: row; flex-wrap: wrap;">
+                        <div class="resource" style="flex: 1; min-width: 250px;">
+                            <div class="resource-name">🔑 Full Access</div>
+                            <div class="permissions">
+                                • Quyền: Admin toàn hệ thống<br>
+                                • Truy cập: Tất cả phòng ban<br>
+                                • Override: Mọi giới hạn
+                            </div>
+                        </div>
+                        <div class="resource" style="flex: 1; min-width: 250px;">
+                            <div class="resource-name">📊 Dashboard Executive</div>
+                            <div class="permissions">
+                                • Báo cáo: Real-time<br>
+                                • Analytics: BI Dashboard<br>
+                                • Metrics: Usage & Performance
+                            </div>
+                        </div>
+                        <div class="resource" style="flex: 1; min-width: 250px;">
+                            <div class="resource-name">🔍 Audit Trail</div>
+                            <div class="permissions">
+                                • Log: Tất cả hoạt động<br>
+                                • Compliance: Theo dõi tuân thủ<br>
+                                • Forensics: Điều tra bảo mật
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="security-layer">
+                <h3>🛡️ Lớp Bảo Mật & Tuân Thủ</h3>
+                <div class="security-features">
+                    <div class="security-feature tooltip" data-tooltip="Tích hợp với Active Directory">
+                        <div class="feature-icon">🔐</div>
+                        <div><strong>Active Directory</strong></div>
+                        <div>SSO với domain công ty</div>
+                    </div>
+                    <div class="security-feature tooltip" data-tooltip="Xác thực đa yếu tố">
+                        <div class="feature-icon">📱</div>
+                        <div><strong>Multi-Factor Auth</strong></div>
+                        <div>OTP/SMS/Authenticator</div>
+                    </div>
+                    <div class="security-feature tooltip" data-tooltip="Ngăn chặn rò rỉ dữ liệu">
+                        <div class="feature-icon">🚫</div>
+                        <div><strong>Data Loss Prevention</strong></div>
+                        <div>Scan nội dung nhạy cảm</div>
+                    </div>
+                    <div class="security-feature tooltip" data-tooltip="Chính sách lưu trữ tự động">
+                        <div class="feature-icon">🗂️</div>
+                        <div><strong>Retention Policies</strong></div>
+                        <div>Tự động xóa sau X tháng</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add interactive animations
+        document.querySelectorAll('.department').forEach(dept => {
+            dept.addEventListener('click', function() {
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Add floating animation to main node
+        const mainNode = document.querySelector('.main-node');
+        let direction = 1;
+        setInterval(() => {
+            mainNode.style.transform = `translateY(${direction * 3}px)`;
+            direction *= -1;
+        }, 2000);
+    </script>
+</body>
+</html>
