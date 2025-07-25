@@ -224,7 +224,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="title">📊 ShareDrive - Hệ Thống Phân Quyền Chi Tiết</h1>
+        <h1 class="title"> ShareDrive - Hệ Thống Phân Quyền Chi Tiết</h1>
         
         <div class="diagram">
             <div class="connecting-lines">
@@ -232,26 +232,28 @@
             </div>
             
             <div class="main-node tooltip" data-tooltip="Hệ thống quản lý tài liệu tập trung">
-                🗄️ ShareDrive
+                ShareDrive
             </div>
 
             <div class="departments">
                 <div class="department tooltip" data-tooltip="Quản lý tài chính và thuế">
-                    <h3>💰 Phòng Kế Toán</h3>
+                    <h3>Phòng Kế Toán</h3>
                     <div class="resources">
                         <div class="resource">
                             <div class="resource-name">Thuế</div>
                             <div class="permissions">
-                                • Quyền: Đọc/Ghi/Xóa<br>
-                                • Truy cập: Nhân viên KT + Trưởng phòng<br>
-                                • Backup: Hàng ngày
+                                • Quyền: Contributor<br>
+                               <p style="margin-left: 9px;">Truy cập: Nhân viên KT + Trưởng phòng</p>
                             </div>
                         </div>
                         <div class="resource">
                             <div class="resource-name">Tài liệu nội bộ</div>
                             <div class="permissions">
-                                • Quyền: Đọc/Ghi<br>
-                                • Truy cập: Toàn bộ phòng KT
+                                • Quyền: View<br>
+                              <p style="margin-left: 9px;">Truy cập: Toàn bộ phòng KT </p> <br>
+
+                                • Quyền: Manger<br>
+                            <p style="margin-left: 9px;">Truy cập: Trường Phòng </p>
                             </div>
                         </div>
                         
@@ -259,86 +261,94 @@
                 </div>
 
                 <div class="department tooltip" data-tooltip="Quản lý hạ tầng và platform">
-                    <h3>⚙️ Phòng Kỹ Thuật</h3>
+                    <h3>Phòng Kỹ Thuật</h3>
                     <div class="resources">
                         <div class="resource">
                             <div class="resource-name">IAAS</div>
                             <div class="permissions">
-                                • Quyền: Full Admin<br>
-                                • Truy cập: Team Infrastructure<br>
-                                • Monitoring: 24/7
+                                • Quyền: Contributor<br>
+                             <p style="margin-left: 9px;">Truy cập: Team Infrastructure </p><br>
+                                
                             </div>
                         </div>
                         <div class="resource">
                             <div class="resource-name">Tài liệu nội bộ</div>
                             <div class="permissions">
-                                • Quyền: Đọc/Ghi/Chia sẻ<br>
-                                • Truy cập: Toàn bộ phòng KT
+                                • Quyền: Manger<br>
+                          <p style="margin-left: 9px;">Truy cập: Trường Phòng </p><br>
+                                • Quyền: View<br>
+                               <p style="margin-left: 9px;">Truy cập: Toàn bộ phòng KT </p>
                             </div>
                         </div>
                         <div class="resource">
-                            <div class="resource-name">SAS</div>
+                            <div class="resource-name">SAAS</div>
                             <div class="permissions">
-                                • Quyền: Deploy/Monitor<br>
-                                • Truy cập: Team Platform<br>
-                                • CI/CD: Tự động
+                                • Quyền: Contributor<br>
+                                <p style="margin-left: 9px;">Truy cập: Team Platform </p><br>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="department tooltip" data-tooltip="Quản lý hợp đồng và bán hàng">
-                    <h3>🤝 Phòng Bán Hàng</h3>
+                    <h3> Phòng Bán Hàng</h3>
                     <div class="resources">
                         <div class="resource">
                             <div class="resource-name">Hợp Đồng</div>
                             <div class="permissions">
-                                • Quyền: Tạo/Sửa/Phê duyệt<br>
-                                • Truy cập: Sales + Quản lý<br>
-                                • Workflow: Phê duyệt tự động
+                                • Quyền: Contributor<br>
+                               <p style="margin-left: 9px;">Truy cập: Team Sales </p><br>
+                                • Quyền: Commenter<br>
+                                <p style="margin-left: 9px;">Truy cập: Pháp Chế</p><br>
+
+                              
                             </div>
                         </div>
                         <div class="resource">
                             <div class="resource-name">Tài liệu nội bộ</div>
                             <div class="permissions">
-                                • Quyền: Đọc/Ghi<br>
-                                • Truy cập: Team Sales<br>
-                                • CRM: Tích hợp
+                                 • Quyền: Manger<br>
+                                <p style="margin-left: 9px;">Truy cập: Trường Phòng </p> <br>
+                                • Quyền: View<br>
+                               <p style="margin-left: 9px;">Truy cập: Toàn bộ phòng </p><br>
+                               
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="department tooltip" data-tooltip="Quản lý pháp lý và tuân thủ">
-                    <h3>⚖️ Phòng Pháp chế</h3>
+                    <h3> Phòng Pháp chế</h3>
                     <div class="resources">
                         <div class="resource">
                             <div class="resource-name">Tài liệu nội bộ</div>
                             <div class="permissions">
-                                • Quyền: Đọc/Ghi/Bảo mật cao<br>
-                                • Truy cập: Chỉ phòng Pháp chế<br>
-                                • Mã hóa: AES-256
+                                • Quyền: Manger<br>
+                                <p style="margin-left: 9px;">Truy cập: Trường Phòng </p> <br>
+                                • Quyền: View<br>
+                               <p style="margin-left: 9px;">Truy cập: Toàn bộ phòng </p><br>
                             </div>
                         </div>
                         <div class="resource">
                             <div class="resource-name">Biên bản</div>
                             <div class="permissions">
-                                • Quyền: Tạo/Ký số<br>
-                                • Truy cập: Luật sư + Chứng thực<br>
-                                • Digital Signature: PKI
+                                • Quyền: Contributor<br>
+                               <p style="margin-left: 9px;">Truy cập: Tất cả mọi người </p><br>
+                               
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="department tooltip" data-tooltip="Quyền cao nhất trong hệ thống" style="grid-column: 1 / -1;">
-                    <h3>👑 Tổng Giám Đốc</h3>
+                    <h3>Tổng Giám Đốc</h3>
                     <div class="resources" style="flex-direction: row; flex-wrap: wrap;">
                         <div class="resource" style="flex: 1; min-width: 250px;">
                             <div class="resource-name"> Full Access</div>
                             <div class="permissions">
                                 • Quyền: Admin toàn hệ thống<br>
-                                • Truy cập: Tất cả phòng ban<br>
+                                <p style="margin-left: 9px;">Truy cập: Tất cả phòng ban </p>
                                 • Override: Mọi giới hạn
                             </div>
                         </div>
